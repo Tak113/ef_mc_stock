@@ -8,6 +8,8 @@ from calculator import metrics_calculator
 from chart_plotter import chart_plotter
 # optimiser_factory.py
 import optimiser_factory as optimiser_factory
+# monte carlo simulator.py
+from monte_carlo_simulator import monte_carlo_simulator
 
 class object_factory:
 	#initialize the attributes of the class
@@ -30,7 +32,13 @@ class object_factory:
 	def get_charts_plotter(self):
 		return chart_plotter(self.get_metrics_calculator)
 
+	# optimisation
 	def get_optimiser(self, targets, size):
 		return optimiser_factory.optimiser(self.get_metrics_calculator(),
 			self.__settings.RiskFunction, self.__settings.ReturnFunction,
 			targets, size)
+	
+	# random portfolio prediction
+	def get_portfolio_generator(self):
+		return monte_carlo_simulator(self.get_metrics_calculator(), self.__settings.RiskFunction,
+			self.__settings.ReturnFunction, self.__settings.NumberOfPortfolios)

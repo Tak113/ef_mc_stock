@@ -5,7 +5,7 @@ from calculator import risk_return_calculator
 
 class settings:
 
-	MyCompanies = ['INTC','AAPL','AMD','NVDA']
+	MyCompanies = ['INTC','AAPL','AMD','NVDA', 'GOOG','UBER','TSLA']
 	API = 'yahoo'
 	YearsToGoBack = 3 # year
 	PriceEvent = 'Adj Close' # choose from 'High', 'Low', 'Open', 'Close', 'Volume', or 'Adj Close'

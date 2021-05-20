@@ -155,12 +155,14 @@ class chart_plotter:
 
 		fig = go.Figure(data = data, layout = layout)
 
+		fig.update_xaxes(tickformat = ',.0%')
+		fig.update_yaxes(tickformat = ',.0%')
 		fig.update_layout(
 			template = 'plotly_dark'
 		)
 		fig.show()
 
-	# pie chart
+	# pie/donut chart
 	def plot_pie(self, max_sr, min_risk):
 		# max SR
 		df_maxSR = pd.DataFrame(max_sr)
