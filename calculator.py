@@ -18,6 +18,14 @@ class metrics_calculator:
 		return df.loc[df['Risk'].astype(float).idxmin()]
 		# return df.iloc[df['Risk'].astype(float).idxmin()]
 
+	@staticmethod
+	def get_max_return(df):
+		return df.loc[df['Return'].astype(float).idxmax()]
+
+	@staticmethod
+	def get_min_return(df):
+		return df.loc[df['Return'].astype(float).idxmin()]
+
 
 class risk_return_calculator:
 	# daily asset returns

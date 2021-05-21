@@ -116,7 +116,7 @@ class chart_plotter:
 		fig.show()
 
 	# efficient frontier plot
-	def plot_efficient_frontier(self, portfolio_risk_return_ratio_df, min_risk, max_sr):
+	def plot_efficient_frontier(self, portfolio_risk_return_ratio_df, min_risk, max_sr, max_return, min_return):
 		df = pd.DataFrame(portfolio_risk_return_ratio_df)
 
 		# EF curve
@@ -129,23 +129,41 @@ class chart_plotter:
 		
 		# max sharp ratio
 		MaxSharpeRatio = go.Scatter(
-			name = 'Maximum Sharpe Ratio',
+			name = 'Max Sharpe Ratio',
 			mode = 'markers',
 			x = [max_sr.Risk],
 			y = [max_sr.Return],
-			marker = dict(color = 'indianred', size = 10),
+			marker = dict(color = 'darkseagreen', size = 10),
 		)
 
 		# min risk
 		MinVol = go.Scatter(
-			name = 'Minimum Volatility',
+			name = 'Min Volatility',
 			mode = 'markers',
 			x = [min_risk.Risk],
 			y = [min_risk.Return],
+			marker = dict(color = 'darkkhaki', size = 10),
+		)
+
+		# max return
+		MaxReturn = go.Scatter(
+			name = 'Max Return',
+			mode = 'markers',
+			x = [max_return.Risk],
+			y = [max_return.Return],
+			marker = dict(color = 'indianred', size = 10),
+		)
+
+		# min return
+		MinReturn = go.Scatter(
+			name = 'Min Return',
+			mode = 'markers',
+			x = [min_return.Risk],
+			y = [min_return.Return],
 			marker = dict(color = 'steelblue', size = 10),
 		)
 
-		data = [EF_curve, MaxSharpeRatio, MinVol]
+		data = [EF_curve, MaxSharpeRatio, MinVol, MaxReturn, MinReturn]
 
 		layout = go.Layout(
 			title = 'Portfolio Optimization with Efficient Frontier',
@@ -158,21 +176,23 @@ class chart_plotter:
 		fig.update_xaxes(tickformat = ',.0%')
 		fig.update_yaxes(tickformat = ',.0%')
 		fig.update_layout(
-			template = 'plotly_dark'
+			template = 'plotly_dark',
+			height = 600,
 		)
 		fig.show()
 
 	# pie/donut chart
-	def plot_pie(self, max_sr, min_risk):
+	def plot_pie(self, max_sr, min_risk, max_return, min_return):
 		# max SR
 		df_maxSR = pd.DataFrame(max_sr)
 		df_maxSR = df_maxSR.drop(index = ['Risk', 'Return', 'SharpeRatio'], axis = 0)
 		labels_maxSR = df_maxSR.index.values.tolist()
 		values_maxSR = df_maxSR.values.flatten().tolist()
+		values_maxSR = [round(num, 3) for num in values_maxSR]
 		data_maxSR = {
 			'values': values_maxSR,
 			'labels': labels_maxSR,
-			'domain': {'column': 0},
+			'domain': {'column': 0, 'row': 0},
 			'name': 'maxSR',
 			# 'hoverinfo': 'label+percent+name',
 			'hole': .4,
@@ -184,22 +204,53 @@ class chart_plotter:
 		df_minVol = df_minVol.drop(index = ['Risk', 'Return', 'SharpeRatio'], axis = 0)
 		labels_minVol = df_minVol.index.values.tolist()
 		values_minVol = df_minVol.values.flatten().tolist()
+		values_minVol = [round(num, 3) for num in values_minVol]
 		data_minVol = {
 			'values': values_minVol,
 			'labels': labels_minVol,
-			'domain': {'column': 1},
+			'domain': {'column': 1, 'row': 0},
 			'name': 'minVol',
 			# 'hoverinfo': 'label+percent+name',
 			'hole': .4,
 			'type': 'pie',
 		}
 
-		data = [data_maxSR, data_minVol]
+		# max return
+		df_maxReturn = pd.DataFrame(max_return)
+		df_maxReturn = df_maxReturn.drop(index = ['Risk', 'Return', 'SharpeRatio'], axis = 0)
+		labels_maxReturn = df_maxReturn.index.values.tolist()
+		values_maxReturn = df_maxReturn.values.flatten().tolist()
+		values_maxReturn = [round(num, 3) for num in values_maxReturn]
+		data_maxReturn = {
+			'values': values_maxReturn,
+			'labels': labels_maxReturn,
+			'domain': {'column': 0, 'row': 1},
+			'name': 'maxReturn',
+			'hole': .4,
+			'type': 'pie',
+		}
+
+		# min return
+		df_minReturn = pd.DataFrame(min_return)
+		df_minReturn = df_minReturn.drop(index = ['Risk', 'Return', 'SharpeRatio'], axis = 0)
+		labels_minReturn = df_minReturn.index.values.tolist()
+		values_minReturn = df_minReturn.values.flatten().tolist()
+		values_minReturn = [round(num, 3) for num in values_minReturn]
+		data_minReturn = {
+			'values': values_minReturn,
+			'labels': labels_minReturn,
+			'domain': {'column': 1, 'row': 1},
+			'name': 'minReturn',
+			'hole': .4,
+			'type': 'pie',
+		}
+
+		data = [data_maxSR, data_minVol, data_maxReturn, data_minReturn]
 		# print(data)
 		layout = go.Layout(
 			{
 				'title': 'Optimum Portfolio : Maximum Sharpe Ratio and Minimum Risk',
-				'grid': {'rows':1, 'columns':2},
+				'grid': {'rows':2, 'columns':2},
 				'annotations': [
 					{
 						'text': 'Max SR',
@@ -207,7 +258,7 @@ class chart_plotter:
 							'size': 16
 						},
 						'x': 0.2,
-						'y': 0.5,
+						'y': 0.78,
 						'showarrow': False,
 					},
 					{
@@ -216,7 +267,25 @@ class chart_plotter:
 							'size': 16
 						},
 						'x': 0.8,
-						'y': 0.5,
+						'y': 0.78,
+						'showarrow': False,
+					},
+					{
+						'text': 'Max Return',
+						'font': {
+							'size': 16
+						},
+						'x': 0.18,
+						'y': 0.22,
+						'showarrow': False,
+					},
+					{
+						'text': 'Min Return',
+						'font': {
+							'size': 16
+						},
+						'x': 0.82,
+						'y': 0.22,
 						'showarrow': False,
 					}
 				]
@@ -226,5 +295,6 @@ class chart_plotter:
 		fig = go.Figure(data = data, layout = layout)
 		fig.update_layout(
 			template = 'plotly_dark',
+			height = 800,
 		)
 		fig.show()
