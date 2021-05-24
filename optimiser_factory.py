@@ -49,7 +49,7 @@ class optimiser:
 
 			#printing approx 10x
 			if (i%counter_to_print == 0):
-				print('Completed Generating '+str(i)+' Portfolios')
+				print('--> Completed Generating '+str(i)+' Optimum Portfolios')
 
 		return portfolios_allocations_df
 
@@ -57,7 +57,7 @@ class optimiser:
 		return minimize(self.__risk_function, x0,
 							args = (covariance), method = 'SLSQP',
 							#prints convergence msgs
-							options = {'disp':True},
+							options = {'disp':False},
 							constraints = constraints,
 							bounds = bounds
 						)

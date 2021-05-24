@@ -16,7 +16,7 @@ class settings:
 	RiskFunction = risk_return_calculator.calculate_portfolio_risk
 	ReturnFunction = risk_return_calculator.calculate_portfolio_expectedreturns
 	RiskFreeRate = 0
-	NumberOfPortfolios = 10000 # for a monte carlo
+	NumberOfPortfolios = 1000 # for a monte carlo
 
 	@staticmethod
 	def get_end_date():
@@ -29,5 +29,5 @@ class settings:
 
 	@staticmethod
 	def get_my_targets():
-		return np.arange(0, 1.5, 0.05)
+		return np.arange(0, 1.5, 0.01)
 

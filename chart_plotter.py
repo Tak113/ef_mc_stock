@@ -116,24 +116,25 @@ class chart_plotter:
 		fig.show()
 
 	# efficient frontier plot
-	def plot_efficient_frontier(self, portfolio_risk_return_ratio_df, min_risk, max_sr, max_return, min_return):
-		df = pd.DataFrame(portfolio_risk_return_ratio_df)
+	def plot_efficient_frontier(self, portfolio_risk_return_ratio_df, min_risk, max_sr, max_return, min_return, portfolio_risk_return_mc_df):
+		op_df = pd.DataFrame(portfolio_risk_return_ratio_df)
+		mc_df = pd.DataFrame(portfolio_risk_return_mc_df)
 
 		# EF curve
 		EF_curve = go.Scatter(
 			name = 'Efficient Frontier',
 			mode = 'lines',
-			x = df['Risk'],
-			y = df['Return'],
+			x = op_df['Risk'],
+			y = op_df['Return'],
 		)
-		
+
 		# max sharp ratio
 		MaxSharpeRatio = go.Scatter(
 			name = 'Max Sharpe Ratio',
 			mode = 'markers',
 			x = [max_sr.Risk],
 			y = [max_sr.Return],
-			marker = dict(color = 'darkseagreen', size = 10),
+			marker = dict(color = 'darkseagreen', size = 12),
 		)
 
 		# min risk
@@ -142,7 +143,7 @@ class chart_plotter:
 			mode = 'markers',
 			x = [min_risk.Risk],
 			y = [min_risk.Return],
-			marker = dict(color = 'darkkhaki', size = 10),
+			marker = dict(color = 'darkkhaki', size = 12),
 		)
 
 		# max return
@@ -151,7 +152,7 @@ class chart_plotter:
 			mode = 'markers',
 			x = [max_return.Risk],
 			y = [max_return.Return],
-			marker = dict(color = 'indianred', size = 10),
+			marker = dict(color = 'indianred', size = 12),
 		)
 
 		# min return
@@ -160,10 +161,37 @@ class chart_plotter:
 			mode = 'markers',
 			x = [min_return.Risk],
 			y = [min_return.Return],
-			marker = dict(color = 'steelblue', size = 10),
+			marker = dict(color = 'steelblue', size = 12),
 		)
 
-		data = [EF_curve, MaxSharpeRatio, MinVol, MaxReturn, MinReturn]
+		# monte carlo random
+		MC_random = go.Scatter(
+			name = 'Random ' + str(len(mc_df)) + ' portfolio',
+			mode = 'markers',
+			x = mc_df['Risk'],
+			y = mc_df['Return'],
+			marker = dict(
+				color = 'gray',
+				size = 8,
+				line = dict(
+					color = 'white',
+					width = 1,
+				)
+			),
+			opacity = 0.5
+		)
+
+		# equal allocation (formula is in monte carlo sim)
+		equal_allocations_portfolio = mc_df.loc[mc_df['Portfolio'] == 'EqualAllocationPortfolio']
+		EqAllc = go.Scatter(
+			name = 'Equal Allocation',
+			mode = 'markers',
+			x = equal_allocations_portfolio['Risk'],
+			y = equal_allocations_portfolio['Return'],
+			marker = dict(color = 'pink', size = 12)
+		)
+
+		data = [EF_curve, MaxSharpeRatio, MinVol, MaxReturn, MinReturn, MC_random, EqAllc]
 
 		layout = go.Layout(
 			title = 'Portfolio Optimization with Efficient Frontier',
@@ -180,6 +208,10 @@ class chart_plotter:
 			height = 600,
 		)
 		fig.show()
+
+	# plot montecarlo result
+	def plot_portfolios(self, df):
+		max_sharpe_ratio = self.__mc.get_mac_shape
 
 	# pie/donut chart
 	def plot_pie(self, max_sr, min_risk, max_return, min_return):
@@ -249,7 +281,7 @@ class chart_plotter:
 		# print(data)
 		layout = go.Layout(
 			{
-				'title': 'Optimum Portfolio : Maximum Sharpe Ratio and Minimum Risk',
+				'title': 'Optimum Portfolio : 4 corner cases',
 				'grid': {'rows':2, 'columns':2},
 				'annotations': [
 					{

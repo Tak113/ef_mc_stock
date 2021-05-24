@@ -33,7 +33,7 @@ class monte_carlo_simulator:
 
 			# print apprx 10x
 			if(i%counter_to_print == 0):
-				print('Completed Generating '+ str(i) + 'Portfolios')
+				print('--> Completed Generating '+ str(i) + ' Random Portfolios')
 
 		return portfolios_allocations_df
 
