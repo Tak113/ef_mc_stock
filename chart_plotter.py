@@ -4,6 +4,8 @@ import plotly.express as px
 import plotly.graph_objects as go
 import pandas as pd
 
+import streamlit as st
+
 class chart_plotter:
 
 	def __init__(self, mc):
@@ -21,12 +23,19 @@ class chart_plotter:
 		fig.update_layout(
 			template='plotly_dark',
 			yaxis_tickprefix = '$',
-			legend_title_text = 'Ticker'
+			legend_title_text = 'Ticker',
+			legend = dict(
+				yanchor = 'top',
+				y = 0.99,
+				xanchor = 'left',
+				x = 0.01,
+			)
 		)
 		fig.update_xaxes(title='Time Horizon')
 		fig.update_yaxes(title='Stock Prices $')
-		fig.show()
+		# fig.show()
 		# print(df.columns)
+		st.plotly_chart(fig)
 
 	# stock daily changes plot
 	def plot_returns(self, returns):
@@ -38,14 +47,21 @@ class chart_plotter:
 		)
 		fig.update_layout(
 			template = 'plotly_dark',
-			legend_title_text = 'Ticker'
+			legend_title_text = 'Ticker',
+			legend = dict(
+				yanchor = 'top',
+				y = 0.99,
+				xanchor = 'left',
+				x = 0.01,
+			)
 		)
 		fig.update_xaxes(title= 'Time Horizon')
 		fig.update_yaxes(
 			title='Daily Changes %',
 			tickformat = ',.0%'
 		)
-		fig.show()
+		# fig.show()
+		st.plotly_chart(fig)
 
 	# correlation matric using daily change rate across stocks
 	def plot_correlation_scatter(self, returns):
@@ -57,7 +73,8 @@ class chart_plotter:
 		fig.update_layout(
 			template = 'plotly_dark'
 		)
-		fig.show()
+		# fig.show()
+		st.plotly_chart(fig)
 
 	# correlation matric using daily change rate across stocks
 	def plot_correlation_matrix(self, returns):
@@ -72,7 +89,8 @@ class chart_plotter:
 		fig.update_layout(
 			template = 'plotly_dark'
 		)
-		fig.show()
+		# fig.show()
+		st.plotly_chart(fig)
 
 	# horizontal bar chart for expected returns
 	def plot_expected_returns(self, expected_returns):
@@ -92,9 +110,10 @@ class chart_plotter:
 			yaxis = {'categoryorder':'total ascending'},
 			showlegend=False,
 		)
-		fig.show()
+		# fig.show()
+		st.plotly_chart(fig)
 
-	# howizontal bar chart for cagr
+	# cumulatice chart
 	def plot_cum_daily_return(self, cum_return):
 		df = pd.DataFrame(cum_return)
 		fig = px.line(
@@ -105,7 +124,13 @@ class chart_plotter:
 		fig.update_layout(
 			template = 'plotly_dark',
 			yaxis_tickprefix = '$',
-			legend_title_text = 'Ticker'
+			legend_title_text = 'Ticker',
+			legend = dict(
+				yanchor = 'top',
+				y = 0.99,
+				xanchor = 'left',
+				x = 0.01,
+			)
 		)
 		fig.update_xaxes(title = 'Time Horizon')
 		fig.update_yaxes(
@@ -113,7 +138,8 @@ class chart_plotter:
 			tick0=0,
 			dtick=1,
 		)
-		fig.show()
+		# fig.show()
+		st.plotly_chart(fig)
 
 	# efficient frontier plot
 	def plot_efficient_frontier(self, portfolio_risk_return_ratio_df, min_risk, max_sr, max_return, min_return, portfolio_risk_return_mc_df):
@@ -205,9 +231,16 @@ class chart_plotter:
 		fig.update_yaxes(tickformat = ',.0%')
 		fig.update_layout(
 			template = 'plotly_dark',
-			height = 600,
+			height = 500,
+			legend = dict(
+				yanchor = 'bottom',
+				y = 0.01,
+				xanchor = 'right',
+				x = 0.99,
+			)
 		)
-		fig.show()
+		# fig.show()
+		st.plotly_chart(fig)
 
 	# plot montecarlo result
 	def plot_portfolios(self, df):
@@ -289,7 +322,7 @@ class chart_plotter:
 						'font': {
 							'size': 16
 						},
-						'x': 0.2,
+						'x': 0.18,
 						'y': 0.78,
 						'showarrow': False,
 					},
@@ -298,7 +331,7 @@ class chart_plotter:
 						'font': {
 							'size': 16
 						},
-						'x': 0.8,
+						'x': 0.82,
 						'y': 0.78,
 						'showarrow': False,
 					},
@@ -307,7 +340,7 @@ class chart_plotter:
 						'font': {
 							'size': 16
 						},
-						'x': 0.18,
+						'x': 0.16,
 						'y': 0.22,
 						'showarrow': False,
 					},
@@ -316,7 +349,7 @@ class chart_plotter:
 						'font': {
 							'size': 16
 						},
-						'x': 0.82,
+						'x': 0.84,
 						'y': 0.22,
 						'showarrow': False,
 					}
@@ -329,4 +362,5 @@ class chart_plotter:
 			template = 'plotly_dark',
 			height = 800,
 		)
-		fig.show()
+		# fig.show()
+		st.plotly_chart(fig)

@@ -12,6 +12,8 @@ st.set_page_config(
 	page_title='Portfolio Optimization',
 )
 
+
+####################################################
 ####################################################
 # side bar
 
@@ -72,24 +74,92 @@ button = st.sidebar.button(
 
 # side bar end
 ####################################################
+####################################################
 
 
 
-if button:
-	st.write('test')
-else:
-	st.write('aaaasa')
+# if button:
+# 	st.write('test')
+# else:
+# 	st.write('aaaasa')
 
-st.write(ticker)
+# st.write(ticker)
+# st.write(n_yrs)
+# st.write(n_mc)
+
+
+
+####################################################
+####################################################
+# main graph
 
 # function lists
 obj_factory = object_factory(settings)
 
 # call functions
-ce = obj_factory.get_companies_extractor()
+ce = obj_factory.get_companies_extractor() # get companies info
+cp = obj_factory.get_charts_plotter() # get stock charts over given time horizon
+mc = obj_factory.get_metrics_calculator()
+mcs = obj_factory.get_portfolio_generator()
 
+# get companies list by dataframe
 companies = ce.get_companies_list()
 
+# initialize price extractor
 price_extractor = obj_factory.get_price_extractor(companies)
 
-st.write()
+# get company stock prices
+end_date = settings.get_end_date()
+start_date = settings.get_start_date(end_date)
+# with st.spinner('getting company info'):
+closing_prices = price_extractor.get_prices(settings.PriceEvent, start_date, end_date)
+
+# plot stock charts
+cp.plot_prices(closing_prices)
+
+# calculate daily returns
+returns = settings.DailyAssetsReturnsFunction(closing_prices)
+cp.plot_returns(returns)
+
+# calculate expected retutnrs
+cum_return = settings.DailyAssetsCumulativeReturnsFunction(returns)
+cp.plot_cum_daily_return(cum_return)
+
+# calculate expected mean return from daily changes
+expected_returns = settings.AssetsExpectedReturnsFunction(returns)
+cp.plot_expected_returns(expected_returns)
+
+# calculate covariance for efficient edge quantification
+covariance = settings.AssetsCovarianceFunction(returns)
+
+# visualize daily retunrs correlation
+cp.plot_correlation_scatter(returns)
+
+# visualize daily change correlation matrix
+cp.plot_correlation_matrix(returns)
+
+# use an optimiser
+targets = settings.get_my_targets()
+optimiser = obj_factory.get_optimiser(targets, len(expected_returns.index))
+portfolios_allocations_df = optimiser.generate_portfolios(expected_returns, covariance, settings.RiskFreeRate)
+portfolio_risk_return_ratio_df = portfolios_allocation_mapper.map_to_risk_return_ratios(portfolios_allocations_df)
+portfolio_risk_return_allc_ratio_df = portfolios_allocation_mapper.map_to_risk_return_allc_ratio(portfolios_allocations_df)
+min_risk = mc.get_min_risk(portfolio_risk_return_allc_ratio_df)
+max_sr = mc.get_max_sharpe_ratio(portfolio_risk_return_allc_ratio_df)
+max_return = mc.get_max_return(portfolio_risk_return_allc_ratio_df)
+min_return = mc.get_min_return(portfolio_risk_return_allc_ratio_df)
+
+# monte carlo
+portfolios_allocations_df = mcs.generate_portfolios(expected_returns, covariance, settings.RiskFreeRate)
+portfolio_risk_return_mc_df = portfolios_allocation_mapper.map_to_risk_return_ratios(portfolios_allocations_df)
+
+# plot portfolio
+with st.spinner('Getting optimum and random portfolio'):
+	cp.plot_efficient_frontier(portfolio_risk_return_ratio_df, min_risk, max_sr, max_return, min_return, portfolio_risk_return_mc_df)
+
+# allocation for optimum portfolios
+cp.plot_pie(max_sr, min_risk, max_return, min_return)
+
+# main graph end
+####################################################
+####################################################
