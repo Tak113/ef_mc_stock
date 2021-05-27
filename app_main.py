@@ -7,6 +7,11 @@ from settings import settings
 from object_factory import object_factory
 from mappers import portfolios_allocation_mapper
 
+# set page configurations, app title, favicon, layout (either wide or narrow), etc.
+st.set_page_config(
+	page_title='Portfolio Optimization',
+)
+
 ####################################################
 # side bar
 
