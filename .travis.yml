@@ -4,15 +4,15 @@ sudo: required # superuser permission
 services:
   - docker
 
-# deploy:
-#   provider: elasticbeanstalk
-#   region: "us-west-2" # from aws url
-#   app: "docker-test" # same name from aws
-#   env: "Dockertest-env" # environmetn from aws
-#   bucket_name: "elasticbeanstalk-us-west-2-147528153165" # seach from S3 in aws
-#   bucket_path: "docker-test" # same name as app
-#   on:
-#     branch: master # master branch in github
-#   access_key_id: $AWS_ACCESS_KEY
-#   secret_access_key: $AWS_SECRET_KEY
+deploy:
+  provider: elasticbeanstalk
+  region: "us-west-2" # from aws url
+  app: "docker-st-efmc" # same name from aws
+  env: "Dockerstefmc-env" # environmetn from aws
+  bucket_name: "elasticbeanstalk-us-west-2-147528153165" # seach from S3 in aws
+  bucket_path: "docker-st-efmc" # same name as app
+  on:
+    branch: master # master branch in github
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
 
