@@ -74,6 +74,11 @@ with st.sidebar.form(key = 'input_form'):
 	st.write('  ')
 	st.write('  ')
 
+st.sidebar.markdown('''
+	***  
+	[datak.biz](https://datak.biz)  
+	[git repo](https://github.com/Tak113/streamlit_ef_mc)
+''')
 
 # side bar end
 ####################################################
@@ -89,6 +94,7 @@ with st.sidebar.form(key = 'input_form'):
 # run following script if form button is submitted
 if submit:
 	st.title('Optimization Dashboard')
+	st.markdown('***')
 
 	# function lists
 	obj_factory = object_factory(settings)
@@ -160,6 +166,7 @@ if submit:
 		portfolios_allocations_df = mcs.generate_portfolios(expected_returns, covariance, settings.RiskFreeRate, n_mc)
 		portfolio_risk_return_mc_df = portfolios_allocation_mapper.map_to_risk_return_ratios(portfolios_allocations_df)
 		
+		st.markdown('***')
 		st.header('Optimization and Monte Carlo Simulation')
 		st.write('  ')
 		with st.beta_expander('About Simulation'):
