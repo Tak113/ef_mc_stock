@@ -1,5 +1,3 @@
-# companies_extractor.py
-from companies_extractor import static_companies_extractor as static_companies_extractor
 # price_extractor.py
 from price_extractor import price_extractor
 # calculator.py
@@ -15,10 +13,6 @@ class object_factory:
 	#initialize the attributes of the class
 	def __init__(self, settings):
 		self.__settings = settings
-
-	#create company list by ticker
-	def get_companies_extractor(self):
-		return static_companies_extractor(self.__settings.MyCompanies)
 
 	#pull stock price for each ticker
 	def get_price_extractor(self, companies):

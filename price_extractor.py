@@ -21,13 +21,13 @@ class price_extractor:
 		symbols = self.__companies['Ticker']
 		tmp = {}
 		for i in symbols:
-			with st.spinner('getting prices for ' +i):
-				try:
-					tmp = web.DataReader(i, self.__api, start_date, end_date)
-					print('--> Fetched prices for: '+i)
-				except:
-					print('--> Issue getting prices for: '+i)
-				else:
-					prices[i] = tmp[event]
+			# with st.spinner('getting prices for ' +i):
+			try:
+				tmp = web.DataReader(i, self.__api, start_date, end_date)
+				print('--> Fetched prices for: '+i)
+			except:
+				print('--> Issue getting prices for: '+i)
+			else:
+				prices[i] = tmp[event]
 		return prices
 
