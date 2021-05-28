@@ -35,4 +35,4 @@ class object_factory:
 	# random portfolio prediction
 	def get_portfolio_generator(self):
 		return monte_carlo_simulator(self.get_metrics_calculator(), self.__settings.RiskFunction,
-			self.__settings.ReturnFunction, self.__settings.NumberOfPortfolios)
+			self.__settings.ReturnFunction)

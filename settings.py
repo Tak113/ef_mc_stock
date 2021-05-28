@@ -6,7 +6,6 @@ from calculator import risk_return_calculator
 
 class settings:
 
-	MyCompanies = ['INTC','AAPL','AMD','NVDA', 'GOOG','UBER']
 	API = 'yahoo'
 	PriceEvent = 'Adj Close' # choose from 'High', 'Low', 'Open', 'Close', 'Volume', or 'Adj Close'
 	DailyAssetsReturnsFunction = risk_return_calculator.calculate_daily_asset_returns
@@ -16,7 +15,6 @@ class settings:
 	RiskFunction = risk_return_calculator.calculate_portfolio_risk
 	ReturnFunction = risk_return_calculator.calculate_portfolio_expectedreturns
 	RiskFreeRate = 0
-	NumberOfPortfolios = 1000 # for a monte carlo
 
 	@staticmethod
 	def get_end_date():

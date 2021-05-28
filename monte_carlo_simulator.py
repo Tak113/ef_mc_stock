@@ -2,13 +2,12 @@ import pandas as pd
 import numpy as np
 
 class monte_carlo_simulator:
-	def __init__(self, mc, risk_function, return_function, numberOfPortfolios):
-		self.__numberOfPortfolios = numberOfPortfolios
+	def __init__(self, mc, risk_function, return_function):
 		self.__risk_function = risk_function
 		self.__return_function = return_function
 		self.__mc = mc
 
-	def generate_portfolios(self, returns, covariance, risk_free_rate):
+	def generate_portfolios(self, returns, covariance, risk_free_rate, n_random_portfolio):
 
 		portfolios_allocations_df = pd.DataFrame({'Symbol': returns.index, 'MeanReturn': returns.values})
 		extra_data = pd.DataFrame({'Symbol': ['Return', 'Risk', 'SharpeRatio'], 'MeanReturn': [0,0,0]})
@@ -24,8 +23,8 @@ class monte_carlo_simulator:
 		 portfolios_allocations_df, returns, covariance, risk_free_rate)
 
 		# generate portfolios
-		counter_to_print = int(self.__numberOfPortfolios/10)
-		for i in range(self.__numberOfPortfolios):
+		counter_to_print = int(n_random_portfolio/10)
+		for i in range(n_random_portfolio):
 			portfolio_id = 'Portfolio_' + str(i)
 			allocations = self.get_random_allocations(portfolio_size)
 			self.compute_portfolios_risk_return_sharpe_ratio(portfolio_id, allocations,

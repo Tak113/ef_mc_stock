@@ -98,7 +98,7 @@ class chart_plotter:
 		fig = px.bar(
 			df,
 			orientation = 'h',
-			title = 'Annual Expected Returns (mean of daily returns * 252 annual ops days)'
+			title = 'Annual Expected Returns'
 		)
 		fig.update_xaxes(
 			title = 'Expected Returns %',
