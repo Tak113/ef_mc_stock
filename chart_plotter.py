@@ -31,7 +31,10 @@ class chart_plotter:
 				x = 0.01,
 			)
 		)
-		fig.update_xaxes(title='Time Horizon')
+		fig.update_xaxes(
+			title='Time Horizon',
+			# rangeslider_visible = True,
+		)
 		fig.update_yaxes(title='Stock Prices $')
 		# fig.show()
 		# print(df.columns)
