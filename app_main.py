@@ -106,13 +106,16 @@ if submit:
 	
 	# get companies list by dataframe
 	companies = settings.get_companies_list(ticker)
+	# print(companies)
 	
 	# initialize price extractor
 	price_extractor = obj_factory.get_price_extractor(companies)
-	
+
 	# get company stock prices
 	end_date = settings.get_end_date()
 	start_date = settings.get_start_date(end_date, n_yrs)
+	# print(start_date)
+	# print(end_date)
 
 	with st.spinner('...getting company info'):
 		closing_prices = price_extractor.get_prices(settings.PriceEvent, start_date, end_date)
@@ -120,13 +123,14 @@ if submit:
 		# plot stock charts
 		st.header('Exploretory Data Analysis')
 		st.write('  ')
-		with st.beta_expander('About Analysis'):
+		with st.expander('About Analysis'):
 			st.write('Review historical stock performance as a start')
 			st.write('Then translate to daily percent change to see magnitude of daily stock fluctuations')
-			st.write('Normalize stock perfomance starting as $1, then apply daily changes with all time horizon cumulated to predict how much $ changes did $1 stock at start has been made at last in the horizon')
+			st.write('Normalize stock perfomance starting as 1 USD, then apply daily changes with all time horizon cumulated to predict how much USD changes did 1 USD stock at start has been made at last in the horizon')
 			st.write('From different cut of expected changes, using annual change %. Use 252 operation dayas/yr multiply by mean of daily percent changes')
 			st.write('Correlation and covariance are importance factor to group up which stocks behaves similarly. From asset allocation perspectives, having similar behavial stocks does not mitigate risk while having non-correlated stocks mitigate volatility risks')
 
+		# print(closing_prices)
 		cp.plot_prices(closing_prices)
 		
 		# calculate daily returns
@@ -169,7 +173,7 @@ if submit:
 		st.markdown('***')
 		st.header('Optimization and Monte Carlo Simulation')
 		st.write('  ')
-		with st.beta_expander('About Simulation'):
+		with st.expander('About Simulation'):
 			st.write('For a given stocks, getting efficient frontier edge curve. The edges are made by most efficient allocation.')
 			st.write('From efficient frontier curve, getting 4 unique optimum portfolios, which are maximum return, minimum return, minimum risk, and maximum sharpe ratio.')
 			st.write('Sharpe ratio is an indicator to measure return efficiency against risk(volatility).')
