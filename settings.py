@@ -22,7 +22,8 @@ class settings:
 
 	@staticmethod
 	def get_start_date(end_date, n_yrs):
-		return end_date - dt.timedelta(days = n_yrs * 365)
+		# return end_date - dt.timedelta(days = n_yrs * 365)
+		return end_date - dt.timedelta(days = 3 * 365)
 
 	@staticmethod
 	def get_my_targets():
