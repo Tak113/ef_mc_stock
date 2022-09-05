@@ -3,7 +3,7 @@ version: '3'
 
 # describe what container/services you would like to use
 services:
-  st-ef:
+  tak-test-app:
     build: .
     ports:
       - "8501:8501"
