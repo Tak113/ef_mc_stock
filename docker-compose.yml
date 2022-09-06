@@ -3,7 +3,8 @@ version: '3'
 
 # describe what container/services you would like to use
 services:
-  tak-test-app:
-    build: .
+  tak-test-env:
+    image: "tak113/streamlit-ef-stock:latest"
+    # build: .
     ports:
       - "8501:8501"
