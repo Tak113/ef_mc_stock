@@ -15,10 +15,10 @@ COPY requirements.txt ./
 RUN pip install -r requirements.txt
 
 # specify port for streamlit, streamlit needs specific port
-EXPOSE 8501
+EXPOSE 80
 
 # copy the contents of app into a directory called /usr/app in docker
 COPY ./ ./
 
 # execute the command when starting the container
-CMD ["streamlit", "run", "app_main.py"]
+CMD ["sh", "-c", "streamlit run --browser.serverAddress 0.0.0.0 --server.enableCORS False --server.port 80 app_main.py"]
